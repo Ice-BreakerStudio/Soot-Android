@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:minHeight="160dp">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing"
+        android:minHeight="150dp"
+        app:cardCornerRadius="10dp"
+        app:strokeColor="@android:color/darker_gray"
+        app:strokeWidth="0.5dp"
+        android:clickable="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/hostlogo"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="55dp"
+                android:scaleType="fitXY" />
+
+
+            <TextView
+                android:id="@+id/hostname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="120dp"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/vs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="VS"
+                android:textSize="30dp"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/guestlogo"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="255dp"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/guestname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="255dp"
+                android:layout_marginTop="120dp"
+                android:textSize="20dp"/>
+
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+</RelativeLayout>
