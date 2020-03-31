@@ -6,10 +6,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.icebreaker.soot.adapter.HomeAdapter;
 import com.icebreaker.soot.entity.MatchInfo;
+import com.icebreaker.soot.entity.OriginalRankData;
+import com.icebreaker.soot.entity.RankDataScore;
+import com.icebreaker.soot.entity.RankInfo;
 import com.icebreaker.soot.entity.TeamRank;
 
 
@@ -23,6 +30,8 @@ import com.google.gson.reflect.TypeToken;
 import org.json.*;
 import java.util.*;
 import java.lang.reflect.*;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,24 +50,43 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         
         //实例化gson
-		Gson gson=new Gson();
-		
-		//Get请求
+		final Gson gson=new Gson();
+
+
+
+        //Get请求
 		Kalle.get("https://api.qiuduoduo.cn/data/team/rank/yc/score")
-        .perform(new SimpleCallback<JSONObject>() {
+        .perform(new SimpleCallback<String>() {
         @Override
-        public void onResponse(SimpleResponse<JSONObject, String> response) {
+        public void onResponse(SimpleResponse<String, String> response) {
             // 请求响应了。
             if(response.isSucceed()) {
+                OriginalRankData originalRankData=gson.fromJson(response.succeed(),OriginalRankData.class);
+
+                RankDataScore rankDataScore=gson.fromJson(gson.toJson(originalRankData.getData()),RankDataScore.class);
+
+                RankInfo rankInfo=gson.fromJson(gson.toJson(rankDataScore.getScore()),RankInfo.class);
+                //Toast toast = Toast.makeText(getApplicationContext(),rankInfo.getRank().toString(), Toast.LENGTH_LONG);
+                //toast.show();
                 //解析json
-                JSONObject json = response.succeed();
-                JSONObject data= json.getJSONObject("data");
-                JSONObject score = data.getJSONObject("score");
-                JSONArray rank = score.getJSONArray("排名");
-                List<TeamRank> retList = gson.fromJson(rank.toString(),new TypeToken<List<TeamRank>>(){}.getType());
-                //List<TeamRank> list = JSONObject.parseArray(rank.toString(), TeamRank.class);
+                //Json的解析类对象
+                JsonParser parser = new JsonParser();
+                //将JSON的String 转成一个JsonArray对象
+                JsonArray jsonArray = parser.parse(rankInfo.getRank().toString()).getAsJsonArray();
+
+                ArrayList<TeamRank> userBeanList = new ArrayList<>();
+
+                //加强for循环遍历JsonArray
+                for (JsonElement user : jsonArray) {
+                    //使用GSON，直接转成Bean对象
+                    TeamRank teamRank = gson.fromJson(user, TeamRank.class);
+                    Log.d("测试",teamRank.getClubname());
+                    userBeanList.add(teamRank);
+                }
+
             } else {
-                //Toast.show(response.failed());
+                Toast toast = Toast.makeText(getApplicationContext(), response.failed(), LENGTH_LONG);
+                toast.show();
             }
         }
     });
