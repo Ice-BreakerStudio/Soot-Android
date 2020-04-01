@@ -66,10 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 RankDataScore rankDataScore=gson.fromJson(gson.toJson(originalRankData.getData()),RankDataScore.class);
 
                 RankInfo rankInfo=gson.fromJson(gson.toJson(rankDataScore.getScore()),RankInfo.class);
+                
                 List<TeamRank> retList = gson.fromJson(gson.toJson(rankInfo.getRank()),new TypeToken<List<TeamRank>>(){}.getType());
-                for(TeamRank teamRank:retList){
-                    Log.d("测试","第"+teamRank.getRank()+"名"+teamRank.getClubname());
-                }
                 LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(layoutManager);
                 RankAdapter adapter = new RankAdapter(new ArrayList<TeamRank>());
