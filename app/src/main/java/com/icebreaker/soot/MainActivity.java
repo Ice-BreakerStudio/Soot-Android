@@ -2,25 +2,25 @@ package com.icebreaker.soot;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.icebreaker.soot.adapter.HomeAdapter;
-import com.icebreaker.soot.adapter.RankAdapter;
-import com.icebreaker.soot.entity.MatchInfo;
+
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.icebreaker.soot.adapter.MainActivityViewPagerAdapter;
 import com.icebreaker.soot.entity.OriginalRankData;
 import com.icebreaker.soot.entity.RankDataScore;
 import com.icebreaker.soot.entity.RankInfo;
 import com.icebreaker.soot.entity.TeamRank;
-
-
+import com.icebreaker.soot.fragment.MatchFragment;
+import com.icebreaker.soot.fragment.MeFragment;
+import com.icebreaker.soot.fragment.NewsFragment;
 
 import com.yanzhenjie.kalle.*;
 import com.yanzhenjie.kalle.simple.*;
@@ -28,15 +28,14 @@ import com.yanzhenjie.kalle.simple.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.*;
 import java.util.*;
-import java.lang.reflect.*;
 
 import static android.widget.Toast.LENGTH_LONG;
 
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView recyclerView;//全局定义recycleview
+    ViewPager viewPager;
+    BottomNavigationBar bottomNavigationBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,44 +44,61 @@ public class MainActivity extends AppCompatActivity {
         
         //查找控件
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
-        recyclerView =(RecyclerView)findViewById(R.id.matchrecycler);
+        viewPager=(ViewPager)findViewById(R.id.viewpager);
+        bottomNavigationBar=(BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
 		
 		//设置toolbar
         setSupportActionBar(toolbar);
-        
-        //实例化gson
-		final Gson gson=new Gson();
 
+        bottomNavigationBar
+                .addItem(new BottomNavigationItem(R.drawable.ic_news, "新闻"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_match, "比赛"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_me, "我的"))
+                .setFirstSelectedPosition(0)
+                .initialise();
 
-        //Get请求
-		Kalle.get("https://api.qiuduoduo.cn/data/team/rank/yc/score")
-        .perform(new SimpleCallback<String>() {
-        @Override
-        public void onResponse(SimpleResponse<String, String> response) {
-            // 请求响应了。
-            if(response.isSucceed()) {
-                OriginalRankData originalRankData=gson.fromJson(response.succeed(),OriginalRankData.class);
-
-                RankDataScore rankDataScore=gson.fromJson(gson.toJson(originalRankData.getData()),RankDataScore.class);
-
-                RankInfo rankInfo=gson.fromJson(gson.toJson(rankDataScore.getScore()),RankInfo.class);
-                
-                List<TeamRank> retList = gson.fromJson(gson.toJson(rankInfo.getRank()),new TypeToken<List<TeamRank>>(){}.getType());
-                LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
-                recyclerView.setLayoutManager(layoutManager);
-                RankAdapter adapter = new RankAdapter(new ArrayList<TeamRank>());
-                recyclerView.setAdapter(adapter);
-                adapter.setNewData(retList);
-                //解析json
-                //Json的解析类对象
-
-
-            } else {
-                Toast toast = Toast.makeText(getApplicationContext(), response.failed(), LENGTH_LONG);
-                toast.show();
+        bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(int position) {
+                switch (position){
+                    case 0:
+                        viewPager.setCurrentItem(0,true);
+                        break;
+                    case 1:
+                        viewPager.setCurrentItem(1,true);
+                        break;
+                    case 2:
+                        viewPager.setCurrentItem(2,true);
+                        break;
+                }
             }
-        }
-    });
+            @Override
+            public void onTabUnselected(int position) {
+            }
+            @Override
+            public void onTabReselected(int position) {
+            }
+        });
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                bottomNavigationBar.selectTab(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        setupvieaoager(viewPager);
+    }
 
 		/*
         //测试UI用的数据可不管
@@ -103,5 +119,16 @@ public class MainActivity extends AppCompatActivity {
         adapter.setNewData(arrayList);
 
 		 */
+
+
+
+
+
+    private void setupvieaoager(ViewPager viewPager){
+        MainActivityViewPagerAdapter adapter = new MainActivityViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new NewsFragment());
+        adapter.addFragment(new MatchFragment());
+        adapter.addFragment(new MeFragment());
+        viewPager.setAdapter(adapter);
     }
 }
