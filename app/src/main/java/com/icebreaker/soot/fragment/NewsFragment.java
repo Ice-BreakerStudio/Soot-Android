@@ -50,7 +50,10 @@ public class NewsFragment extends Fragment {
                         if(response.isSucceed()) {
                             OriginalData originalData =gson.fromJson(response.succeed(), OriginalData.class);
                             NewsPosts newsPosts=gson.fromJson(gson.toJson(originalData.getData()),NewsPosts.class);
-                            NewsPostInfo newsPostInfo=gson.fromJson(gson.toJson(newsPosts.getPosts()),NewsPostInfo.class);
+                            List<NewsPostInfo> newsPostInfo=gson.fromJson(
+                                    gson.toJson(newsPosts.getPosts()),
+                                    new TypeToken<List<NewsPostInfo>>(){}.getType()
+                            );
 
                             Toast toast=Toast.makeText(getContext(),gson.toJson(newsPosts.getPosts()), LENGTH_LONG);
                             toast.show();
