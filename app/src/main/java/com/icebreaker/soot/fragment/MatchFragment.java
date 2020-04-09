@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.icebreaker.soot.R;
 import com.icebreaker.soot.adapter.RankAdapter;
-import com.icebreaker.soot.entity.OriginalRankData;
+import com.icebreaker.soot.entity.OriginalData;
 import com.icebreaker.soot.entity.RankDataScore;
 import com.icebreaker.soot.entity.RankInfo;
 import com.icebreaker.soot.entity.TeamRank;
@@ -45,9 +45,9 @@ public class MatchFragment extends Fragment {
                     public void onResponse(SimpleResponse<String, String> response) {
                         // 请求响应了。
                         if(response.isSucceed()) {
-                            OriginalRankData originalRankData=gson.fromJson(response.succeed(),OriginalRankData.class);
+                            OriginalData originalData =gson.fromJson(response.succeed(), OriginalData.class);
 
-                            RankDataScore rankDataScore=gson.fromJson(gson.toJson(originalRankData.getData()),RankDataScore.class);
+                            RankDataScore rankDataScore=gson.fromJson(gson.toJson(originalData.getData()),RankDataScore.class);
 
                             RankInfo rankInfo=gson.fromJson(gson.toJson(rankDataScore.getScore()),RankInfo.class);
 

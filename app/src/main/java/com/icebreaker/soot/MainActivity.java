@@ -2,35 +2,17 @@ package com.icebreaker.soot;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.icebreaker.soot.adapter.MainActivityViewPagerAdapter;
-import com.icebreaker.soot.entity.OriginalRankData;
-import com.icebreaker.soot.entity.RankDataScore;
-import com.icebreaker.soot.entity.RankInfo;
-import com.icebreaker.soot.entity.TeamRank;
 import com.icebreaker.soot.fragment.MatchFragment;
 import com.icebreaker.soot.fragment.MeFragment;
 import com.icebreaker.soot.fragment.NewsFragment;
-
-import com.yanzhenjie.kalle.*;
-import com.yanzhenjie.kalle.simple.*;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.*;
-
-import static android.widget.Toast.LENGTH_LONG;
 
 
 public class MainActivity extends AppCompatActivity {

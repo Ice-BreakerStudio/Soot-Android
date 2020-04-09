@@ -14,7 +14,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.icebreaker.soot.R;
 import com.icebreaker.soot.adapter.RankAdapter;
-import com.icebreaker.soot.entity.OriginalRankData;
+import com.icebreaker.soot.entity.NewsPostInfo;
+import com.icebreaker.soot.entity.NewsPosts;
+import com.icebreaker.soot.entity.OriginalData;
 import com.icebreaker.soot.entity.RankDataScore;
 import com.icebreaker.soot.entity.RankInfo;
 import com.icebreaker.soot.entity.TeamRank;
@@ -39,26 +41,19 @@ public class NewsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         final Gson gson=new Gson();
-        Kalle.get("https://api.qiuduoduo.cn/data/team/rank/yc/score")
+        Kalle.get("http://api.qiuduoduo.cn/ttposts?b=&fillContent=true&lazy=true&ps=20")
+                .addHeader("Accept-Encoding","gzip")
                 .perform(new SimpleCallback<String>() {
                     @Override
                     public void onResponse(SimpleResponse<String, String> response) {
                         // 请求响应了。
                         if(response.isSucceed()) {
-                            OriginalRankData originalRankData=gson.fromJson(response.succeed(),OriginalRankData.class);
+                            OriginalData originalData =gson.fromJson(response.succeed(), OriginalData.class);
+                            NewsPosts newsPosts=gson.fromJson(gson.toJson(originalData.getData()),NewsPosts.class);
+                            NewsPostInfo newsPostInfo=gson.fromJson(gson.toJson(newsPosts.getPosts()),NewsPostInfo.class);
 
-                            RankDataScore rankDataScore=gson.fromJson(gson.toJson(originalRankData.getData()),RankDataScore.class);
-
-                            RankInfo rankInfo=gson.fromJson(gson.toJson(rankDataScore.getScore()),RankInfo.class);
-
-                            List<TeamRank> retList = gson.fromJson(gson.toJson(rankInfo.getRank()),new TypeToken<List<TeamRank>>(){}.getType());
-
-                            LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
-                            RecyclerView recyclerView=(RecyclerView)getView().findViewById(R.id.newsrecycler);
-                            recyclerView.setLayoutManager(layoutManager);
-                            RankAdapter adapter = new RankAdapter(new ArrayList<TeamRank>());
-                            recyclerView.setAdapter(adapter);
-                            adapter.setNewData(retList);
+                            Toast toast=Toast.makeText(getContext(),gson.toJson(newsPosts.getPosts()), LENGTH_LONG);
+                            toast.show();
                         } else {
                             Toast toast = Toast.makeText(getContext(), response.failed(), LENGTH_LONG);
                             toast.show();
