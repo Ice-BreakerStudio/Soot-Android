@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.icebreaker.soot.R;
+import com.icebreaker.soot.adapter.NewsAdapter;
 import com.icebreaker.soot.adapter.RankAdapter;
 import com.icebreaker.soot.entity.NewsPostInfo;
 import com.icebreaker.soot.entity.NewsPosts;
@@ -55,8 +56,12 @@ public class NewsFragment extends Fragment {
                                     new TypeToken<List<NewsPostInfo>>(){}.getType()
                             );
 
-                            Toast toast=Toast.makeText(getContext(),gson.toJson(newsPosts.getPosts()), LENGTH_LONG);
-                            toast.show();
+                            LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
+                            RecyclerView recyclerView=(RecyclerView)getView().findViewById(R.id.newsrecycler);
+                            recyclerView.setLayoutManager(layoutManager);
+                            NewsAdapter adapter = new NewsAdapter(new ArrayList<NewsPostInfo>());
+                            recyclerView.setAdapter(adapter);
+                            adapter.setNewData(newsPostInfo);
                         } else {
                             Toast toast = Toast.makeText(getContext(), response.failed(), LENGTH_LONG);
                             toast.show();

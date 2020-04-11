@@ -79,34 +79,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setupvieaoager(viewPager);
+        SetupViewPager(viewPager);
     }
 
-		/*
-        //测试UI用的数据可不管
-        ArrayList<MatchInfo> arrayList = new ArrayList<>();
-        for (int i = 0; i<7; i++){
-            MatchInfo matchInfo=new MatchInfo();
-            matchInfo.setHostname("切尔西");
-            matchInfo.setHostlogo("http://mat1.gtimg.com/sports/logo/yingchao/qrx.png");
-            matchInfo.setGuestname("切尔西");
-            matchInfo.setGuestlogo("http://mat1.gtimg.com/sports/logo/yingchao/qrx.png");
-            arrayList.add(matchInfo);
-        }
-        //主页的recycleview
-        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        RankAdapter adapter = new RankAdapter(new ArrayList<TeamRank>());
-        recyclerView.setAdapter(adapter);
-        adapter.setNewData(arrayList);
-
-		 */
 
 
 
-
-
-    private void setupvieaoager(ViewPager viewPager){
+    private void SetupViewPager(ViewPager viewPager){
         MainActivityViewPagerAdapter adapter = new MainActivityViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new NewsFragment());
         adapter.addFragment(new MatchFragment());
