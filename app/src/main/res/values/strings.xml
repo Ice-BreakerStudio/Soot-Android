@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Soot</string>
+    <string name="title_activity_news_content">NewsContentActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>

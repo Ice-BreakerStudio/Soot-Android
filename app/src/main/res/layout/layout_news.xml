@@ -26,7 +26,8 @@
                 android:id="@+id/newsimage"
                 android:layout_marginTop="25dp"
                 android:layout_width="100dp"
-                android:layout_height="100dp"/>
+                android:layout_height="100dp"
+                android:scaleType="fitXY"/>
             <TextView
                 android:id="@+id/newstitle"
                 android:layout_toRightOf="@id/newsimage"
