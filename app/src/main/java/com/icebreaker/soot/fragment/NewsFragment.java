@@ -54,7 +54,7 @@ public class NewsFragment extends Fragment {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
-                Intent intent = new Intent(getActivity(), NewsContentActivity.class);
+                Intent intent = new Intent(getContext(), NewsContentActivity.class);
                 intent.putExtra("htmlcontent",NewsContent.get(position));
                 startActivity(intent);
             }

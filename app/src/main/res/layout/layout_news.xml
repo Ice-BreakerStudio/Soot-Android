@@ -16,7 +16,7 @@
         app:cardCornerRadius="10dp"
         app:strokeColor="@android:color/darker_gray"
         app:strokeWidth="0.5dp"
-        android:clickable="true">
+        android:clickable="false">
 
         <RelativeLayout
             android:layout_width="match_parent"
