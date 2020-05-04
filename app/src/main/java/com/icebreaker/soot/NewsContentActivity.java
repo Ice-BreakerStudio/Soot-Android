@@ -21,7 +21,7 @@ public class NewsContentActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String script = "<script>var imgs = document.querySelectorAll('.img-jpg');imgs.forEach((item)=>{item.setAttribute('src', item.getAttribute('data-original'))});</script>";
+        String script = "<script>var imgs = document.querySelectorAll('.img-jpg, .img-gif');imgs.forEach((item)=>{item.setAttribute('src', item.getAttribute('data-original'))});</script>";
         Intent intent = getIntent();
         String NewsContent = intent.getStringExtra("htmlcontent") + script;
 
