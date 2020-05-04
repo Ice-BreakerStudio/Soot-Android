@@ -2,17 +2,15 @@ package com.icebreaker.soot;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.KeyEvent;
-import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 public class NewsContentActivity extends AppCompatActivity {
 
@@ -23,14 +21,15 @@ public class NewsContentActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent=getIntent();
-        String NewsContent=intent.getStringExtra("htmlcontent");
+        String script = "<script>var imgs = document.querySelectorAll('.img-jpg');imgs.forEach((item)=>{item.setAttribute('src', item.getAttribute('data-original'))});</script>";
+        Intent intent = getIntent();
+        String NewsContent = intent.getStringExtra("htmlcontent") + script;
 
-        WebView webView=(WebView)findViewById(R.id.newscontent);
+        WebView webView = (WebView) findViewById(R.id.newscontent);
         WebSettings webSettings = webView.getSettings();
         webSettings.setSupportZoom(false);
-        webView.loadData(NewsContent,"text/html", "utf-8");
-
+        webSettings.setJavaScriptEnabled(true);
+        webView.loadDataWithBaseURL(null, NewsContent, "text/html", "utf-8", null);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
